@@ -1,23 +1,40 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Square from './Square';
+import Boxes from './Boxes';
 
 function App() {
+  const [squares, setSquares]=React.useState(Boxes)
+
+  function toggle(id){
+    setSquares((oldState)=>{
+      const newSquares = []
+      for (let i=0; i < oldState.length; i++){
+        const currentSquare = oldState[i]
+        if (currentSquare.id === id){
+          newSquares.push({
+            ...currentSquare, 
+            on: !currentSquare.on
+          })
+        } else {
+          newSquares.push(currentSquare)
+        }
+      }
+      return newSquares
+    })
+  }
+
+  const renderSqr = squares.map(each => (
+    <Square 
+    id = {each.id}
+    on = {each.on}
+    toggle = {toggle}
+    />
+ ))
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {renderSqr}
     </div>
   );
 }
